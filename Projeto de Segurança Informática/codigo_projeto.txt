@@ -1,0 +1,420 @@
+Etapa 1  
+
+Mudar o nome do Router :
+
+- enable
+-configure terminal
+- hostname Router1
+---------------------------------------------------
+
+Colocar banner no router : 
+
+- banner motd % Router do Arcanjo 1%
+--------------------------------------------------
+Colocar password no modo previligiado:
+ - enable secret cisco 
+
+(depois passou a cisco12345)
+---------------------------------------------------
+
+Colocar password à ligação por consola 
+- line console 0 
+password cisco
+login
+
+-------------------------------------------------
+
+Colocar a senha da linha virtual
+
+line vty 04
+password cisco
+login
+
+(depois com o passo de colocar senha minimo 10 caracteres a password é cisco12345)
+
+-------------------------------------------------
+
+Configuracao ip dos computadores
+
+PC0 - 192.31.1.1/24
+PC2 - 192.31.2.1/24
+PC3 - 192.31.3.1/24
+PC4 - 192.31.4.1/24
+PC5 - 192.31.5.1/24
+PC1 - 172.16.1.1 /24
+
+-----------------------------------------------------
+
+configuracao interface do Router1
+
+enable
+configure terminal
+interface fa 0/0
+
+ip address 192.31.1.2  255.255.255.0
+no shutdown 
+end
+
+
+interface serial 0/0/0
+ip address 10.1.1.1 255.255.255.252
+no shutdown
+end
+
+
+-----
+
+
+
+
+Configuração interface do Router2 
+
+enable 
+configure terminal 
+interface fa 0/0
+
+ip address 192.31.2.2 255.255.255.0
+
+no shutdown 
+end
+
+interface serial 0/0/1
+ip address 10.2.2.1 255.255.255.252
+
+
+--------------
+
+Configuração interface do Router3
+enable
+configure terminal
+interface fa 0/0
+
+ip address 192.31.3.2 255.255.255.0
+
+no shutdown 
+end
+
+
+interface serial 0/0/0
+
+ip address 10.4.4.2 255.255.255.252
+
+
+
+
+
+----------
+Configuração interface do Router4
+
+enable
+configure terminal 
+interface fa 0/0
+
+ip address 192.31.4.2 255.255.255.0
+
+interface serial 0/0/1
+
+ip address 10.5.5.1 255.255.255.252
+
+Configuração interface do Router5
+
+enable
+configure terminal 
+interface gig 0/0
+
+ip address 10.6.6.2 255.255.255.252
+
+interface gig 0/1
+
+ip address 192.31.5.2 255.255.255.0
+
+interface gig 0/2
+
+ip address 172.16.1.2 255.255.255.0
+
+
+
+Configuração interface do Router7
+
+enable 
+configure terminal
+
+interface serial 0/0/0
+ip address  10.1.1.2 255.255.255.252
+
+
+interface fa 0/1
+ip address  10.6.6.1 255.255.255.252
+
+
+
+interface fa 0/0
+ip address 10.3.3.2 255.255.255.252
+
+
+interface serial 0/0/1
+ip address 10.2.2.2 255.255.252
+
+---------------------------------------------
+
+
+
+Configuracao Router6
+
+interface serial 0/0/0
+ip address 10.4.4.1 255.255.255.252
+
+
+iterface serial 0/0/1
+ip address 10.5.5.2 255.255.255.252
+
+interface fa 0/0
+ip address 10.3.3.1 255.255.255.252
+--------------------------------------------------------
+
+Colocar banner num rooter
+- banner motd % Router 1 %
+
+
+-------------------------------------------------------
+Configuração Rota estatica 
+
+
+username admin privilege 15 secret 12345678
+
+
+
+router 1
+
+ip route 0.0.0.0  0.0.0.0 s0/0/0
+
+ip route 10.3.3.0 255.255.255.252  s0/0/0
+
+
+
+router2
+
+ip route 0.0.0.0  0.0.0.0 s0/0/1
+ip route 10.3.3.0 255.255.255.252 s0/0/1
+
+router3
+
+ip route 0.0.0.0  0.0.0.0 s0/0/0
+ip route 10.3.3.0 255.255.255.252  s0/0/0
+
+router4
+ip route 0.0.0.0  0.0.0.0 s0/0/1
+ip route 10.3.3.0 255.255.255.252 s0/0/1
+
+router 5
+ip route 0.0.0.0 0.0.0.0 g0/0
+
+router6
+
+ip route 192.31.1.0 255.255.255.0 10.1.1.1
+ip route 192.31.2.0 255.255.255.0 10.2.2.1
+ip route 192.31.3.0 255.255.255.0 10.4.4.2
+ip route 192.31.4.0 255.255.255.0 10.5.5.1
+ip route 192.31.5.0 255.255.255.0 10.6.6.2
+ip route 172.16.1.0 255.255.255.0 10.6.6.2
+
+router 7
+
+ip route 192.31.5.0 255.255.255.0 10.6.6.2
+ip route 172.16.1.0 255.255.255.0 10.6.6.2
+ip route 192.31.1.0 255.255.255.0 10.1.1.1
+ip route 192.31.2.0 255.255.255.0 10.2.2.1
+ip route 192.31.3.0 255.255.255.0 10.4.4.2
+ip route 192.31.4.0 255.255.255.0 10.5.5.1
+
+ip route 10.3.3.0 255.255.255.252 g/0/0
+
+
+-------
+
+configurar tamanho de password em todos os routers 
+
+service password-encryption
+security passwords min-length 10
+login block-for 120 attempts 3 within 60
+
+configurar enable com a passe cisco12345
+
+enable secrect cisco12345
+
+
+-------
+
+Configurar um user:
+
+username Admin privilege 15 secret cisco123456
+username arcanjo privilege 15 secret cisco123456
+
+line console 0 
+login local
+exit 
+exit
+
+------------
+
+(Estao ja configurados  - r1,r2,r7 r5 r 3 r4 r6 )
+
+Configurar a line vty 0 4 de cada utilizador 
+
+ line vty 0 4
+privilege level 15
+login local
+transport input ssh
+ exit
+
+-------------------------
+Configurar o nome do dominio ip 
+
+ip domain name span.com
+
+
+------------
+
+Gerar uma chave para criptografar o trafego do ssh
+
+crypto key generate rsa general-keys modulus 1024
+
+
+------------
+
+
+
+Configurar a versao 2 do ssh
+
+ip ssh version 2
+exit
+------------
+Configurar o acesso remoto apenas PC-A
+SSH
+
+Ip address 192.31.1.2
+Username : Admin
+
+Configurar time outs e paramentos do ssh
+
+ip ssh time-out 90
+ip ssh authentication-retries 2
+
+--------------------------
+
+Criar acesso remoto roter 1 
+
+ip access-list standard TASK-5
+permit 192.31.1.1 0.0.0.0
+
+deny  192.31.2.1 0.0.0.0
+deny 192.31.3.1 0.0.0.0
+deny 192.31.4.1 0.0.0.0
+deny 192.31.5.1 0.0.0.0
+deny 172.16.1.1 0.0.0.0
+
+
+
+ line vty 0 4
+login local
+ transport input ssh
+ access-class TASK-5 in
+ end
+
+--------------------------
+
+aaa new-model
+aaa authentication login default group radius local
+exit
+configure terminal
+aaa new-model
+aaa authentication login default group radius local
+radius-server host 192.31.1.1 auth-port 1645 key cisco
+
+username RadAdmin password RadAdminpa55
+
+end 
+
+--------------------------
+
+
+(Daqui para baixo nao tenho a certeza )
+
+Configuracao do Radius no roteador r3
+
+aaa new-model
+aaa authentication login default group radius local
+exit
+configure terminal
+aaa new-model
+aaa authentication login default group radius local
+radius-server host  192.31.3.1 auth-port 1645 key cisco
+username Router3 password Router12345
+end 
+
+
+Ir ao server ->services->aaa-> on e criar
+
+cliente Name - Router3 	cliente ip -> 192.31.1.2
+
+secret cisco3 
+
+criar os utilizadores -> 
+
+UserName-  Router3 pass: cisco
+
+--------
+
+
+
+
+ETAPA 11:
+
+1- acess-list standard STND-1
+deny 10.1.1.0 0.0.03
+deny 10.4.4.0 0.0.0.3
+permit any
+ip access-group STND-1 out
+
+
+2-  R3: 
+
+access-list 100 permit tcp any any eq 80 
+access-list 100 permit tcp any any eq 443
+access-list 100 permit tcp any any eq 53
+acess-list 100 deny ip any any
+
+interface serial s0/0/0
+ip access-group 100 in
+ 
+
+3 - R3:
+ acess-list  standard STND-2
+permit tcp host 10.3.3.0 host 10.3.3.0 eq 21
+
+interface serial 0/0/0
+ip access-group STND-2  out
+
+
+
+
+
+Etapa 14 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
